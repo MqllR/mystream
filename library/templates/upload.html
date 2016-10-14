@@ -1,5 +1,9 @@
-<form enctype="multipart/form-data" action="/library/upload/" method="post">
+{% extends "admin/base_site.html" %}
+{% block content %}
+<form enctype="multipart/form-data" action="" method="post">
     {% csrf_token %}
-    {{ form }}
+    {{ form.as_p }}
+    <input type="file" name="stream_file"><br /><br />
     <input type="submit" value="Submit" />
 </form>
+{% endblock %}

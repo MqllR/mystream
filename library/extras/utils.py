@@ -1,19 +1,14 @@
 #!/usr/bin/python
 
 import os
+import re
 
 from django.conf import settings
 
-def handle_uploaded_file(f):
-    
-    path_name = settings.MEDIA_TMP + '/.' + f.name
+# EXTENSION
+RE_AVI_EXTENSION    = re.compile(r'^.*\.avi$')
 
-    if not os.path.exists(path_name):
-        with open(path_name, 'wb+') as destination:
-            for chunk in f.chunks():
-                destination.write(chunk)
+def check_extension(streamname):
+    if re.match(RE_AVI_EXTENSION, streamname):
+        return 'avi'
 
-        return True
-
-    else:
-        return False

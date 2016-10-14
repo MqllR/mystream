@@ -13,7 +13,10 @@ DATABASES = {
     }
 }
 
-MEDIA_ROOT = '/home/mql/dev/python/mystream/media'
+MEDIA_ROOT = '/home/mael/dev/mystream/media'
 
 MEDIA_TMP = MEDIA_ROOT + '/tmp'
 MEDIA_STREAM = MEDIA_ROOT + '/stream'
+
+# Where to store TemporaryUploadedFile
+FILE_UPLOAD_TEMP_DIR = MEDIA_TMP

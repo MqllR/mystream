@@ -4,11 +4,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from django.core.files.storage import FileSystemStorage
 
 # Create your models here.
-
-fs = FileSystemStorage(location = '/tmp/')
 
 class Category(models.Model):
 
@@ -20,20 +17,27 @@ class Category(models.Model):
 class Stream(models.Model):
     
     name = models.CharField(
-                max_length=30,
-                default=None
+                max_length=60,
             )
 
-    description = models.TextField(default=None)
+    description = models.TextField()
 
-    movie = models.FileField(
-                upload_to='tmp/',
-                storage=fs
+    movie = models.CharField(
+                max_length=255,
+                null=True,
             )
 
-    encoded = models.BooleanField(default=False)
+    encoded = models.BooleanField(default=1)
 
     category = models.ForeignKey(Category)
 
     def __str__(self):
         return self.name
+
+class StreamTmp(models.Model):
+
+    tmppath = models.CharField(
+                max_length=255,
+            )
+
+    stream = models.ForeignKey(Stream)

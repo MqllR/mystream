@@ -18,7 +18,7 @@ from django.contrib import admin
 from library.views import upload_file
 
 urlpatterns = [
-    url(r'^admin/library/stream/', upload_file),
+    url(r'^admin/library/stream/add/', upload_file),
     url(r'^admin/', admin.site.urls),
     url(r'^library/', include('library.urls')),
 ]
