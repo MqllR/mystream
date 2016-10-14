@@ -1,10 +1,9 @@
-<html>
-    <head>
-    </head>
+{% extends "admin/base_site.html" %}
 
-    <body>
-        <p>
-            Encoding process is currently running.
-        </p>
-    </body>
-</html>
+{% block extrahead %}
+<meta http-equiv="refresh" content="2; url=/admin/library/stream/">
+{% endblock %}
+
+{% block content %}
+<h1>The encoding process will start...</h1>
+{% endblock %}

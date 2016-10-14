@@ -46,7 +46,7 @@ def upload_file(request):
             #    thr.start()
             #    return HttpResponseRedirect('/library/encoding_process/')
             #else: 
-            return HttpResponseRedirect('/admin/library/stream/')
+            return HttpResponseRedirect('/admin/library/stream/encoding_process/')
 
     else:
         form = StreamForm()
