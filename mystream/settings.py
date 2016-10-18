@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'library',
+    'djcelery',
+    'kombu.transport.django',
 ]
 
 MIDDLEWARE = [
@@ -120,4 +122,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-from settings_local import *
+from mystream.settings_local import *

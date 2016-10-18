@@ -8,7 +8,6 @@ class SaveStream(FileSystemStorage):
 
     def _save(self, name, content):
         full_path = self.path(name)
-        print full_path
 
         # TODO CHECK EXTENSION .avi
 

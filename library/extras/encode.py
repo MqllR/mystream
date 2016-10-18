@@ -1,35 +1,65 @@
 #!/usr/bin/python
 
 import re
+import os
 
-from os import system
-from threading import Thread, RLock
+from subprocess import call
 
 from django.conf import settings
 
-# To serialize encoding process
-lock = RLock()
+from library.models import Stream, StreamTmp
+from .utils import check_extension
 
-RE_STREAM_AVI_EXT = re.compile(r'^.*/\.(?P<stream_name>.*)\.avi$')
+CMD_FFMEG                   = '/usr/bin/ffmpeg'
+CMD_CONVERT_AVI_TO_MP4      = CMD_FFMEG + " -i %s -c:v libx264 -pix_fmt yuv420p -movflags faststart %s"
 
-class Encode(Thread):
+class Encode():
     
-    def __init__(self, file_path):
-        super(Encode, self).__init__()
-        self.file_path_src = file_path
-        #self.obj = obj
+    def __init__(self, streamtmp):
+
+        if not os.path.exists(CMD_FFMEG):
+            raise Exception('ffmpeg binarie is not available')
+
+        try:
+            StreamTmp.objects.get(tmppath=streamtmp)
+            self.streamtmp = streamtmp
+        except Exception as e:
+            print("Error : %s" % str(e))
+
+    def _set_filename(self):
+        self.stream = Stream.objects.get(streamtmp__tmppath=self.streamtmp)
+
+        self.stream_name = settings.MEDIA_STREAM + '/' + self.stream.name.lower().replace(' ', '_') + '.mp4'
+
+    def _pre_encoding(self):
+        if os.path.exists(self.stream_name):
+            try:
+                os.remove(self.stream_name)
+            except Exception as e:
+                print('Error remove : %s' % str(e))
+
+    def _post_encoding(self):
+        try:
+            os.remove(self.streamtmp)
+            
+            self.stream.movie = self.stream_name
+            self.stream.encoded = 1
+            self.stream.save()
+
+            StreamTmp.objects.get(tmppath=self.streamtmp).delete()
+        except Exception as e:
+            print("Error remove : %s" % str(e))
 
     def run(self):
-        with lock:
-            self._convert_avi_mp4()
-            
+        self._set_filename()
 
-    def _convert_avi_mp4(self):
-        if RE_STREAM_AVI_EXT.match(self.file_path):
-            self.file_path_dst = settings.MEDIA_STREAM + '/' + re.group('stream_name') + '.mp4'
+        try:
+            self._pre_encoding()
 
-            try:
-                os.system("ffmpeg -i %s -c:v libx264 -pix_fmt yuv420p -movflags faststart %s" \
-                                    % (self.file_path_src, self.obj))
-            except:
-                pass
+            retcode = call(CMD_CONVERT_AVI_TO_MP4 \
+                                % (self.streamtmp, self.stream_name), shell=True)
+
+            self._post_encoding()
+        except Exception as e:
+            print("Error encoding : %s" % str(e))
+

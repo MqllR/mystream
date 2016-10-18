@@ -27,7 +27,7 @@ class Stream(models.Model):
                 null=True,
             )
 
-    encoded = models.BooleanField(default=1)
+    encoded = models.BooleanField(default=0)
 
     category = models.ForeignKey(Category)
 

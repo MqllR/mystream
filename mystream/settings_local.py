@@ -20,3 +20,9 @@ MEDIA_STREAM = MEDIA_ROOT + '/stream'
 
 # Where to store TemporaryUploadedFile
 FILE_UPLOAD_TEMP_DIR = MEDIA_TMP
+
+
+#import djcelery
+#djcelery.setup_loader()
+
+BROKER_URL = 'django://'
