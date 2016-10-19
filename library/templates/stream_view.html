@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Stream {{ stream.name }}{% endblock %}
+{% block content %}
+
+<h3>
+    {{ stream.name }}
+</h3>
+<div>
+    {{ stream.description }}
+</div>
+{% load static %}
+<a href={% url 'library:stream_view' stream.id %}><img src="{% static 'img/click.png' %}"</a>
+{% endblock %}

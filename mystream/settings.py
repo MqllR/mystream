@@ -25,8 +25,11 @@ SECRET_KEY = '5_klu!1g8$6_#*!g2=iek&186@3=1#s-+1))!7zf98@-#&l1(l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    import mimetypes
+    mimetypes.add_type("video/mp4", ".mp4", True)
 
+ALLOWED_HOSTS = []
 
 # Application definition
 

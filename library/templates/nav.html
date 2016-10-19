@@ -1,0 +1,16 @@
+{% load static %}
+<div id='navbar'>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header" >
+        <a href="#"><img src="{% static "img/logo.png" %}"/></a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse" style="margin-top:20px">
+        <ul class="nav navbar-nav navbar-right" style="padding-right:50px">
+          <li><a href="{% url 'library:stream' 'movie' %}">Movie</a></li>
+          <li><a href="{% url 'library:stream' 'serie' %}">Serie</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>

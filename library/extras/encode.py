@@ -29,12 +29,12 @@ class Encode():
     def _set_filename(self):
         self.stream = Stream.objects.get(streamtmp__tmppath=self.streamtmp)
 
-        self.stream_name = settings.MEDIA_STREAM + '/' + self.stream.name.lower().replace(' ', '_') + '.mp4'
+        self.stream_name = self.stream.name.lower().replace(' ', '_') + '.mp4'
 
     def _pre_encoding(self):
-        if os.path.exists(self.stream_name):
+        if os.path.exists(settings.BASE_DIR + settings.MEDIA_URL + self.stream_name):
             try:
-                os.remove(self.stream_name)
+                os.remove(settings.BASE_DIR + settings.MEDIA_URL + self.stream_name)
             except Exception as e:
                 print('Error remove : %s' % str(e))
 
@@ -57,7 +57,7 @@ class Encode():
             self._pre_encoding()
 
             retcode = call(CMD_CONVERT_AVI_TO_MP4 \
-                                % (self.streamtmp, self.stream_name), shell=True)
+                                % (self.streamtmp, settings.BASE_DIR + settings.MEDIA_URL + self.stream_name), shell=True)
 
             self._post_encoding()
         except Exception as e:

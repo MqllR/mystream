@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import ListView, DetailView
 
 
 from .models import Stream, StreamTmp, Category
@@ -49,11 +50,7 @@ def upload_file(request):
 
             # Run encoding process in an async task
             encode_stream.delay(tmpfilename) 
-            #if handle_uploaded_file(request.FILES['stream_file']):
-            #    thr = Encode('media/tmp/.' + request.FILES['stream_file'].name)
-            #    thr.start()
-            #    return HttpResponseRedirect('/library/encoding_process/')
-            #else: 
+
             return HttpResponseRedirect('/admin/library/stream/encoding_process/')
 
     else:
@@ -61,3 +58,41 @@ def upload_file(request):
 
     return render(request, 'upload.html', {'form': form})
 
+
+class StreamListView(ListView):
+
+    template_name = 'stream_list.html'
+    context_object_name = "streams"
+
+    def get_queryset(self):
+        cat = self.kwargs.get('category', 'None')
+
+        if not cat == 'None':
+            if cat == 'movie':
+                return Stream.objects.filter(encoded=1, category__name='movie')
+            elif cat == 'serie':
+                return Stream.objects.filter(encoded=1, category__name='serie')
+        else:
+            return Stream.objects.filter(encoded=1)
+
+class StreamDetailView(DetailView):
+
+    template_name = 'stream_view.html'
+    context_objects_name = 'stream'
+
+    def get_object(self):
+        return Stream.objects.get(id=self.kwargs['stream_id'])
+
+class StreamViewDetailView(DetailView):
+
+    template_name = 'stream_viewer.html'
+    context_objects_name = 'stream'
+
+    def get_context_data(self, **kwargs):
+        context = super(StreamViewDetailView, self).get_context_data(**kwargs)
+        context['base_path'] = settings.MEDIA_URL
+
+        return context
+
+    def get_object(self):
+        return Stream.objects.get(id=self.kwargs['stream_id'])

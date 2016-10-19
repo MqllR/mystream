@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Stream{% endblock %}
+{% block content %}
+
+<ul>
+    {% for stream in streams %}
+    <li><a href="{% url 'library:stream_id' stream.id %}">{{ stream.name }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
