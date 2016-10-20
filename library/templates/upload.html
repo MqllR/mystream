@@ -1,9 +1,41 @@
 {% extends "admin/base_site.html" %}
+{% load static %}
+{% block extrastyle %}
+<style type="text/css">
+.spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-left: -50px; /* half width of the spinner gif */
+    margin-top: -50px; /* half height of the spinner gif */
+    text-align: center;
+    z-index: 1234;
+    overflow: auto;
+}
+</style>
+{% endblock %}
 {% block content %}
+
+<div id="spinner" class="spinner" style="display:none;">
+    <img id="img-spinner" src="{% static "img/uploading.gif" %}" alt="Loading"/>
+</div>
+
 <form enctype="multipart/form-data" action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="file" name="stream_file"><br /><br />
-    <input type="submit" value="Submit" />
+    <input type="submit" value="Submit" id="button-upload" />
 </form>
+{% endblock %}
+
+{% block footer %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type='text/javascript'>
+
+$(document).ready(function(){
+    $('#button-upload').click(function() {
+        $('#spinner').show();
+    });
+});
+</script>
 {% endblock %}
