@@ -3,6 +3,11 @@
 
 from .settings import BASE_DIR
 
+ALLOWED_HOSTS = [
+        '127.0.0.1',
+        '5.196.17.86',
+]
+
 # DB parameters
 DATABASES = {
     'default': {
