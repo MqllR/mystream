@@ -7,8 +7,9 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse" style="margin-top:20px">
         <ul class="nav navbar-nav navbar-right" style="padding-right:50px">
-          <li><a href="{% url 'library:stream' 'movie' %}">Movie</a></li>
-          <li><a href="{% url 'library:stream' 'serie' %}">Serie</a></li>
+        {% load category %}
+        {% show_category 'nav' %}
+        {{ res }}
         </ul>
       </div>
     </div>
