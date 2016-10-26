@@ -11,7 +11,7 @@ from library.models import Stream, StreamTmp
 from .utils import check_extension
 
 CMD_FFMEG                   = '/usr/bin/ffmpeg'
-CMD_CONVERT_AVI_TO_MP4      = CMD_FFMEG + " -i %s -c:v libx264 -pix_fmt yuv420p -movflags faststart %s"
+CMD_CONVERT_AVI_TO_MP4      = CMD_FFMEG + " -i %s -c:v libx264 -vf scale=320:240 -pix_fmt yuv420p -movflags faststart %s"
 
 class Encode():
     
