@@ -95,7 +95,6 @@ class StreamSearchListView(StreamListView):
                        (Q(description__icontains=q) for q in query_list))
             )
 
-            pprint(result)
             return result
 
 class StreamDetailView(DetailView):
