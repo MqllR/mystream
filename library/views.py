@@ -1,10 +1,13 @@
 from pprint import pprint
 
+import operator
+
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 from django.views.generic import ListView, DetailView
 
 
@@ -74,6 +77,26 @@ class StreamListView(ListView):
                 return Stream.objects.filter(encoded=1, category__name='serie')
         else:
             return Stream.objects.filter(encoded=1)
+
+class StreamSearchListView(StreamListView):
+
+    def get_queryset(self):
+        result = super(StreamSearchListView, self).get_queryset()
+
+        query = self.request.GET.get('q')
+
+        if query:
+            query_list = query.split()
+
+            result = result.filter(
+                reduce(operator.and_,
+                       (Q(name__icontains=q) for q in query_list)) |
+                reduce(operator.and_,
+                       (Q(description__icontains=q) for q in query_list))
+            )
+
+            pprint(result)
+            return result
 
 class StreamDetailView(DetailView):
 
