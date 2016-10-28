@@ -14,9 +14,14 @@ CMD_FFMEG                   = '/usr/bin/ffmpeg'
 CMD_CONVERT_AVI_TO_MP4      = CMD_FFMEG + " -i %s -c:v libx264 -vf scale=320:240 -pix_fmt yuv420p -movflags faststart %s"
 
 class Encode():
+    """
+    Take a src file in param and run the encode process.
+
+    This class is executed by Celery instance
+    """
+    
     
     def __init__(self, streamtmp):
-
         if not os.path.exists(CMD_FFMEG):
             raise Exception('ffmpeg binarie is not available')
 
@@ -62,4 +67,3 @@ class Encode():
             self._post_encoding()
         except Exception as e:
             print("Error encoding : %s" % str(e))
-

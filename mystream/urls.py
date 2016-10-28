@@ -18,10 +18,12 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 
 from library.views import upload_file
+from library.views import StreamListView
 
 urlpatterns = [
     url(r'^admin/library/stream/add/', upload_file),
     url(r'^admin/library/stream/encoding_process', TemplateView.as_view(template_name='encoding_process.html')),
     url(r'^admin/', admin.site.urls),
+    url(r'^library/$', StreamListView.as_view()),
     url(r'^library/', include('library.urls', namespace='library')),
 ]

@@ -12,7 +12,7 @@ def show_category(pl):
     if pl == 'nav':
         res = ''
         for cat in category:
-            res += '<li><a href="/library/' + cat.name + '/">' + cat.name.capitalize() + '</a></li>'
+            res += '<li><a href="/library/cat/' + cat.name + '/">' + cat.name.capitalize() + '</a></li>'
         
         return mark_safe(res)
     else:
