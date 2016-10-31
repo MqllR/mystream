@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="container">
-    <div class="row">
+    <div class="row title">
         <div class="col-lg-12"><h3>{{ stream.name }}</h3></div>
     <div>
 
@@ -18,12 +18,16 @@
 </div>
 
 <style>
+    .title h3 {
+        border-bottom: 1px solid #dedede;
+    }
+
     .desc {
-        padding-top: 80px;
+        padding-top: 50px;
     }
 
     .click {
-        padding-top: 50px;
+        padding-top: 30px;
     }
 </style>
 {% endblock %}
