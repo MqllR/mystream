@@ -1,10 +1,38 @@
 {% extends "base.html" %}
-{% block title %}Stream{% endblock %}
+{% block title %}Streams{% endblock %}
 {% block content %}
 
-<ul>
-    {% for stream in streams %}
-    <li><a href="{% url 'library:stream_id' stream.id %}">{{ stream.name }}</a></li>
-    {% endfor %}
-</ul>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8"><h1>List of streams</h1>
+            <div class="list">
+                {% for stream in streams %}
+                <div class="row">
+                    <div class="col-lg-4"><a href="{% url 'library:stream_id' stream.id %}">{{ stream.name }}</a></div>
+                    <div class="col-lg-4">{{ stream.category }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-lg-offset-1 col-lg-2">MOST VIEW</div>
+    </div>
+</div>
+
+<style>
+    h1 {
+        border-bottom: 1px solid #dedede;
+    }
+
+    .list {
+        padding-top: 30px;
+    }
+
+    .container .row .row div {
+        height: 30px;
+    }
+
+    .container .row .row div:last-child {
+        border-left: 1px solid;
+    }
+</style>
 {% endblock %}

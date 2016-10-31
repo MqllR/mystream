@@ -2,12 +2,28 @@
 {% block title %}Stream {{ stream.name }}{% endblock %}
 {% block content %}
 
-<h3>
-    {{ stream.name }}
-</h3>
-<div>
-    {{ stream.description }}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12"><h3>{{ stream.name }}</h3></div>
+    <div>
+
+    <div class="row desc">
+        <div class="col-lg-12">{{ stream.description }}<div>
+    </div>
+
+    <div class="row click">
+    {% load static %}
+        <div class="col-lg-offset-10 col-lg-12"><a href="{% url 'library:stream_view' stream.id %}"><img src="{% static 'img/click.png' %}"/></a></div>
+    </div>
 </div>
-{% load static %}
-<a href={% url 'library:stream_view' stream.id %}><img src="{% static 'img/click.png' %}"</a>
+
+<style>
+    .desc {
+        padding-top: 80px;
+    }
+
+    .click {
+        padding-top: 50px;
+    }
+</style>
 {% endblock %}
