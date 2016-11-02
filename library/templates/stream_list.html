@@ -8,8 +8,8 @@
             <div class="list">
                 {% for stream in streams %}
                 <div class="row">
-                    <div class="col-lg-4"><a href="{% url 'library:stream_id' stream.id %}">{{ stream.name }}</a></div>
-                    <div class="col-lg-4">{{ stream.category }}</div>
+                    <div class="col-xs-9"><a href="{% url 'library:stream_id' stream.id %}">{{ stream.name }}</a></div>
+                    <div class="col-xs-2">{{ stream.category }}</div>
                 </div>
                 {% endfor %}
             </div>

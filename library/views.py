@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from django.views.generic import ListView, DetailView
 from django.shortcuts import Http404
+from django.db.models.functions import Lower
 
 
 from .models import Stream, StreamTmp, Category
@@ -92,9 +93,9 @@ class StreamListView(ListView):
         cat = self.kwargs.get('category', 'None')
 
         if cat == 'None':
-            return Stream.objects.filter(encoded=1)
+            return Stream.objects.filter(encoded=1).order_by(Lower('name'))
         else:
-            return Stream.objects.filter(encoded=1, category__name=cat)
+            return Stream.objects.filter(encoded=1, category__name=cat).order_by(Lower('name'))
 
 
 class StreamSearchListView(ListView):
@@ -118,7 +119,7 @@ class StreamSearchListView(ListView):
                        (Q(name__icontains=q) for q in query_list)) |
                 reduce(operator.and_,
                        (Q(description__icontains=q) for q in query_list))
-            )
+            ).order_by(Lower('name'))
 
             return result
 
@@ -132,7 +133,10 @@ class StreamDetailView(DetailView):
     context_objects_name = 'stream'
 
     def get_object(self):
-        return Stream.objects.get(id=self.kwargs['stream_id'])
+        try:
+            return Stream.objects.get(id=self.kwargs['stream_id'])
+        except Stream.DoesNotExist:
+            raise Http404
 
 
 class StreamViewDetailView(DetailView):
@@ -150,4 +154,7 @@ class StreamViewDetailView(DetailView):
         return context
 
     def get_object(self):
-        return Stream.objects.get(id=self.kwargs['stream_id'])
+        try:
+            return Stream.objects.get(id=self.kwargs['stream_id'])
+        except Stream.DoesNotExist:
+            raise Http404
