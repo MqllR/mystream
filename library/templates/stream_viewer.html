@@ -21,7 +21,11 @@
   <div class="row vertical-center-row" style="padding-top:5px">
     <div class="col-md-3 col-md-offset-3">
       <video controls>
+        {% if quality|length_is:"1" %}
+          <source src="{{ base_path }}{% for q in quality %}{{ q.directory }}{% endfor %}{{ stream.movie }}" type="video/mp4">
+        {% else %}
           <source src="{{ base_path }}{{ directory | default:'low/' }}{{ stream.movie }}" type="video/mp4">
+        {% endif %}
       </video>
     </div>
   </div>
