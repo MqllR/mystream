@@ -11,11 +11,12 @@ from django.db.models import Q
 from django.views.generic import ListView, DetailView
 from django.shortcuts import Http404
 from django.db.models.functions import Lower
+from celery import chord
 
 
 from .models import Stream, StreamTmp, Category
 from .forms import StreamForm
-from .tasks import encode_stream
+from .tasks import encode_stream, post_encoding
 from .extras.savefile import SaveStream
 
 # MY OWN VIEW HERE
@@ -38,6 +39,7 @@ def upload_file(request):
             # Save streaming file info
             stream_name = form.cleaned_data['stream_name']
             stream_description = form.cleaned_data['stream_description']
+            stream_quality = form.cleaned_data['stream_quality']
             stream_category = form.cleaned_data['stream_category']
 
             cat = Category.objects.get(name=stream_category)
@@ -45,10 +47,14 @@ def upload_file(request):
             stream = Stream(
                 name=stream_name,
                 description=stream_description,
-                category=cat,
             )
 
+            stream.category = cat
             stream.save()
+
+            # stream_quality is a list of QuerySet
+            # We make the many-to-many relation
+            stream.quality = stream_quality
 
             # Save streaming tmp file info
             StreamTmp(
@@ -56,8 +62,10 @@ def upload_file(request):
                 stream=stream,
             ).save() 
 
-            # Run encoding process in an async task
-            encode_stream.delay(tmpfilename) 
+            # Run encoding process in celery tasks with chord primitive
+            chord(encode_stream.si(tmpfilename, qual.name) 
+                        for qual in stream_quality)(post_encoding.si(tmpfilename))
+
 
             return HttpResponseRedirect('/admin/library/stream/encoding_process/')
 

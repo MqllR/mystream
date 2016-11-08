@@ -25,6 +25,3 @@ MEDIA_URL = '/media/stream/'
 
 # Where to store TemporaryUploadedFile
 FILE_UPLOAD_TEMP_DIR = BASE_DIR + MEDIA_TMP
-
-# Celery
-BROKER_URL = 'django://'
