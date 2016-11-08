@@ -74,6 +74,7 @@ class Encode():
             os.remove(self.streamtmp)
             
             stream = Stream.objects.get(streamtmp__tmppath=self.streamtmp)
+            stream.movie = stream.name.lower().replace(' ', '_') + '.mp4'
             stream.encoded = 1
             stream.save()
 

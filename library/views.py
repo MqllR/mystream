@@ -14,7 +14,7 @@ from django.db.models.functions import Lower
 from celery import chord
 
 
-from .models import Stream, StreamTmp, Category
+from .models import Stream, StreamTmp, Category, Quality
 from .forms import StreamForm
 from .tasks import encode_stream, post_encoding
 from .extras.savefile import SaveStream
@@ -158,6 +158,18 @@ class StreamViewDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(StreamViewDetailView, self).get_context_data(**kwargs)
         context['base_path'] = settings.MEDIA_URL
+
+        try:
+            qual = Stream.objects.filter(id=self.kwargs['stream_id'], quality__in=Quality.objects.all())
+        except Stream.DoesNotExist:
+            raise Http404
+
+        context['quality'] = qual[0].quality.all()
+
+        query = self.request.GET.get('q')
+
+        if query:
+            context['directory'] = query + '/'
 
         return context
 

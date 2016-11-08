@@ -11,8 +11,17 @@
 
   <div class="row vertical-center-row">
     <div class="col-md-3 col-md-offset-3">
+      <span>Quality :</span>
+       {% for qual in quality %}
+       <a role="button" class="btn btn-warning" href="{% url 'library:stream_view' stream.id %}?q={{ qual.name }}">{{ qual.name }}</a>
+       {% endfor %}
+    </div>
+  </div>
+
+  <div class="row vertical-center-row" style="padding-top:5px">
+    <div class="col-md-3 col-md-offset-3">
       <video controls>
-          <source src="{{ base_path }}{{ stream.movie }}" type="video/mp4">
+          <source src="{{ base_path }}{{ directory | default:'low/' }}{{ stream.movie }}" type="video/mp4">
       </video>
     </div>
   </div>
