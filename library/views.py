@@ -159,17 +159,20 @@ class StreamViewDetailView(DetailView):
         context = super(StreamViewDetailView, self).get_context_data(**kwargs)
         context['base_path'] = settings.MEDIA_URL
 
-        try:
-            qual = Stream.objects.filter(id=self.kwargs['stream_id'], quality__in=Quality.objects.all())
-        except Stream.DoesNotExist:
-            raise Http404
-
-        context['quality'] = qual[0].quality.all()
-
         query = self.request.GET.get('q')
 
         if query:
-            context['directory'] = query + '/'
+            try:
+                quality_dir = Quality.objects.get(name=query)
+                context['directory'] = quality_dir.directory
+            except Quality.DoesNotExist:
+                raise Http404
+
+        try:
+            qual = Stream.objects.filter(id=self.kwargs['stream_id'], quality__in=Quality.objects.all())
+            context['quality'] = qual[0].quality.all()
+        except Stream.DoesNotExist:
+            raise Http404
 
         return context
 
