@@ -4,6 +4,6 @@
 *.pyc
 __pycache__/
 mystream/settings_local.py
-library/migration/
+library/migrations/
 db.sqlite3
 media
