@@ -3,6 +3,7 @@
 *.pot
 *.pyc
 __pycache__/
-settings_local.py
+mystream/settings_local.py
+library/migration/
 db.sqlite3
 media

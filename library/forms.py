@@ -3,6 +3,7 @@
 from django import forms
 
 from .models import Category, Quality
+from .models import LANGUAGE_CHOICE
 
 class StreamForm(forms.Form):
 
@@ -12,4 +13,5 @@ class StreamForm(forms.Form):
                                 queryset=Quality.objects.all(),
                                 widget=forms.CheckboxSelectMultiple,
                         )
+    stream_language =  forms.ChoiceField(choices=LANGUAGE_CHOICE)
     stream_category = forms.ModelChoiceField(queryset=Category.objects.all())

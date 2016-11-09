@@ -40,6 +40,7 @@ def upload_file(request):
             stream_name = form.cleaned_data['stream_name']
             stream_description = form.cleaned_data['stream_description']
             stream_quality = form.cleaned_data['stream_quality']
+            stream_language = form.cleaned_data['stream_language']
             stream_category = form.cleaned_data['stream_category']
 
             cat = Category.objects.get(name=stream_category)

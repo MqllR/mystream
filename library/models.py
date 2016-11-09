@@ -24,6 +24,12 @@ class Quality(models.Model):
     def __str__(self):
         return self.name
 
+LANGUAGE_CHOICE = (
+    (0, 'VF'),
+    (1, 'VOSTFR'),
+    (2, 'VO'),
+)
+
 class Stream(models.Model):
     
     name = models.CharField(
@@ -42,6 +48,12 @@ class Stream(models.Model):
     encoded = models.BooleanField(default=0)
     
     date = models.DateTimeField(auto_now=True)
+
+    langue = models.CharField(
+                max_length=10, 
+                choices=LANGUAGE_CHOICE, 
+                default=1
+            )
 
     category = models.ForeignKey(Category)
 
