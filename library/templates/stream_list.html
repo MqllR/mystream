@@ -20,7 +20,7 @@
         padding-top: 10px;
         height: 40px;
         width: 80px;
-        border: 1px solid #dddddd;
+        border: 1px solid #091529;
         border-radius: 10px;
         text-align: center;
     }
@@ -34,7 +34,7 @@
         <div class="col-lg-8"><h1>List of streams</h1>
             <div class="list">
                 {% for stream in streams %}
-                <div class="row">
+                <div class="row stream">
                     <div class="col-xs-10">{{ stream.name }}</div>
                     <div class="col-xs-2"><button type="button" class="clickme btn btn-secondary btn-link btn-sm">Get more</button></div>
                     <div class="hideme">
@@ -59,9 +59,13 @@
 <script>
     $( ".clickme" ).click(function() {
         $('.hideme:visible').hide();
+        $( ".stream" ).css("background-color","#fff");
 
         var index = $( ".clickme" ).index( this );
-        $( ".hideme:eq("+ index +")" ).show();
+        $( ".hideme:eq("+ index +")" ).show(100, function() {
+            $( ".stream:eq("+ index +")" ).css("background-color","#d1ebef");
+            $( ".stream:eq("+ index +")" ).css("border-radius","10px");
+        });
     });
 </script>
 
