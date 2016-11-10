@@ -1,38 +1,68 @@
 {% extends "base.html" %}
+
 {% block title %}Streams{% endblock %}
-{% block content %}
 
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8"><h1>List of streams</h1>
-            <div class="list">
-                {% for stream in streams %}
-                <div class="row">
-                    <div class="col-xs-9"><a href="{% url 'library:stream_id' stream.id %}">{{ stream.name }}</a></div>
-                    <div class="col-xs-2">{{ stream.category }}</div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="col-lg-offset-1 col-lg-2"><!-- Block --!></div>
-    </div>
-</div>
-
+{% block extrat_style %}
 <style>
     h1 {
         border-bottom: 1px solid #dedede;
+    }
+
+    .hideme {
+        display: none;
     }
 
     .list {
         padding-top: 30px;
     }
 
-    .container .row .row div {
-        height: 30px;
+    .info {
+        padding-top: 10px;
+        height: 40px;
+        width: 80px;
+        border: 1px solid #dddddd;
+        border-radius: 10px;
+        text-align: center;
     }
 
-    .container .row .row div:last-child {
-        border-left: 1px solid;
-    }
 </style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8"><h1>List of streams</h1>
+            <div class="list">
+                {% for stream in streams %}
+                <div class="row">
+                    <div class="col-xs-10">{{ stream.name }}</div>
+                    <div class="col-xs-2"><button type="button" class="clickme btn btn-secondary btn-link btn-sm">Get more</button></div>
+                    <div class="hideme">
+                      <div class="col-xs-12">Synopsis:</div>
+                      <div class="col-xs-12"><i>{{ stream.description }}</i></div>
+                      <div class="col-xs-offset-1 col-xs-2 info">{{ stream.category | title }}</div>
+                      <div class="col-xs-offset-1 col-xs-2 info">{{ stream.language }}</div>
+                      <div class="col-xs-offset-4 col-xs-2"><a href="{% url 'library:stream_view' stream.id %}">{% load static %}<img src="{% static 'img/click.png' %}"/></a></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-lg-offset-1 col-lg-2"><!-- Futur Block --!></div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_script %}
+
+<script>
+    $( ".clickme" ).click(function() {
+        $('.hideme:visible').hide();
+
+        var index = $( ".clickme" ).index( this );
+        $( ".hideme:eq("+ index +")" ).show("slow");
+    });
+</script>
+
 {% endblock %}

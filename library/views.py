@@ -133,20 +133,6 @@ class StreamSearchListView(ListView):
             return result
 
 
-class StreamDetailView(DetailView):
-    """
-    Print information of specifique stream
-    """
-
-    template_name = 'stream_view.html'
-    context_objects_name = 'stream'
-
-    def get_object(self):
-        try:
-            return Stream.objects.get(id=self.kwargs['stream_id'])
-        except Stream.DoesNotExist:
-            raise Http404
-
 
 class StreamViewDetailView(DetailView):
     """
