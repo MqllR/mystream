@@ -89,11 +89,13 @@
 
             if ( ! $( ".hideme:eq("+ index +")" ).is(':visible') ) {
                 $( ".get:eq("+ index +")" ).show();
+                $( ".stream:eq("+ index +")" ).css("border-bottom", "1px dashed #cfd4db");
             }
         })
         .mouseleave( function() {
             index = $( ".clickme" ).index( this );
             $( ".get:eq("+ index +")" ).hide();
+            $( ".stream:eq("+ index +")" ).css("border-bottom", "none");
         })
         .click( function() {
             var index = $( ".clickme" ).index( this );
