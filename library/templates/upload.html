@@ -2,27 +2,41 @@
 
 {% load static %}
 {% block extrastyle %}
+    <link href="{% static "jquery-ui-1.12.1/jquery-ui.min.css" %}" rel="stylesheet">
+    <link href="{% static "jquery-ui-1.12.1/jquery-ui.structure.min.css" %}" rel="stylesheet">
+
 <style type="text/css">
-    .spinner {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        margin-left: -50px; /* half width of the spinner gif */
-        margin-top: -50px; /* half height of the spinner gif */
-        text-align: center;
-        z-index: 1234;
-        overflow: auto;
+    #spinner {
+        position:absolute;
+        top:40%;
+        left:45%;
+        z-index:3;
+        display:none;
     }
+
+    #overlay {
+        position:absolute;
+        height:100%;
+        width:100%;
+        background:black;
+        opacity:.7;
+        z-index:2;
+        display:none;
+    }
+    
 </style>
 {% endblock %}
 
 {% block content %}
 
-<div id="spinner" class="spinner" style="display:none;">
+<div id="dialog"></div>
+<div id="overlay"></div>
+<div id="spinner">
     <img id="img-spinner" src="{% static "img/uploading.gif" %}" alt="Loading"/>
 </div>
 
-<form enctype="multipart/form-data" action="" method="post">
+<!-- Necessary enctype to upload file --!>
+<form enctype="multipart/form-data" method="post" id="formup">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="file" name="stream_file"><br /><br />
@@ -32,12 +46,58 @@
 
 {% block footer %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="{% static "jquery-ui-1.12.1/jquery-ui.min.js" %}"></script>
+
 <script>
 
-$(document).ready(function(){
-    $('#button-upload').click(function() {
-        $('#spinner').show();
+$("#button-upload").click( function (event) {
+
+    // Do not prevent default event (Here submitting!)
+    event.preventDefault();
+
+    var formData = new FormData($("#formup").get(0));
+    
+    $.ajax({
+            url : '{% url 'uploadform' %}',
+            type : 'POST',
+            data : formData,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+
+            beforeSend: function(data) {
+                $("#spinner").show();
+                $("#overlay").show();
+            },
+
+            success : function(data) {
+                var dial = $("<div></div>").dialog({
+                     title: "Wait",
+                     modal: true,
+                     width: 700,
+                     height: 500,
+                     resizable: false,
+                });
+
+                dial.dialog('open');
+                dial.html(data);
+            },
+
+            error: function(data) {
+                var dial = $("<div></div>").dialog({
+                     title: "Error",
+                     modal: true,
+                     width: 700,
+                     height: 500,
+                     resizable: false,
+                });
+
+                dial.dialog('open');
+                dial.html("<h3>An error Occured</h3>");
+                window.location.replace("{% url 'uploadform' %}"
+            },
+
     });
+
 });
 
 </script>
