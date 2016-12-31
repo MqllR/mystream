@@ -9,7 +9,14 @@
 
     <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
     <link href="{% static "css/main.css" %}" rel="stylesheet">
+    <link href="{% static "jquery-ui-1.12.1/jquery-ui.min.css" %}" rel="stylesheet">
+    <link href="{% static "jquery-ui-1.12.1/jquery-ui.structure.min.css" %}" rel="stylesheet">
 
+    <style>
+       nav {
+            box-shadow: 0px 5px 5px #656565;
+        } 
+    </style>
     {% block extrat_style %}{% endblock %}
 
     <!--[if lt IE 9]>
@@ -27,6 +34,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script src="{% static "jquery-ui-1.12.1/jquery-ui.min.js" %}"></script>
     {% block extra_script %}{% endblock %}
   </body>
 </html>
