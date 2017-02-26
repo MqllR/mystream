@@ -1,0 +1,20 @@
+FROM mqll/django:1.10.5
+
+RUN rm -rf /var/lib/apt/lists/*
+
+RUN pip install gunicorn celery
+
+WORKDIR /opt/
+
+ADD app/ /opt/
+ADD conf/gunicorn.conf /opt/
+
+ENV RABBIT_USER guest
+ENV RABBIT_PASSWD guest
+
+EXPOSE 8000
+
+VOLUME ["/opt/media", "/var/log/gunicorn", "/static", "/opt/db.sqlite3"]
+
+ENTRYPOINT gunicorn mystream.wsgi \
+    --config gunicorn.conf

@@ -23,5 +23,8 @@ DATABASES = {
 MEDIA_TMP = '/media/tmp'
 MEDIA_URL = '/media/stream/'
 
+# Static file to be collected
+STATIC_ROOT = '/static'
+
 # Where to store TemporaryUploadedFile
 FILE_UPLOAD_TEMP_DIR = BASE_DIR + MEDIA_TMP
