@@ -23,6 +23,8 @@ test_app:
     RABBIT_PORT_5672_TCP_ADDR: "127.0.0.1"
     RABBIT_PORT_5672_TCP_PORT: "5672"
   script:
+    - cd app/ && python manage.py makemigrations
+    - cd app/ && python manage.py migrate
     - cd app/ && python manage.py test
     - cd app/ && python manage.py runserver
 
