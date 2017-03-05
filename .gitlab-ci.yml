@@ -11,9 +11,9 @@ before_script:
 install_env:
   type: build
   script:
-    - apt-get update -qy
-    - apt-get install -y python-dev python-pip
-    - pip install django==1.10.5 gunicorn celery
+    - sudo apt-get update -qy
+    - sudo apt-get install -y python-dev python-pip
+    - sudo pip install django==1.10.5 gunicorn celery
 
 test_app:
   type: test
