@@ -1,5 +1,42 @@
-job:
+stages:
+  - build
+  - test
+  - build_docker
+  - push_docker
+  - deploy
+
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+  
+install_env:
+  type: build
   script:
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - apt-get update -qy
+    - apt-get install -y python-dev python-pip
+    - pip install django==1.10.5 gunicorn celery
+
+test_app:
+  type: test
+  script:
+    - cd app/ && python manage.py test
+    - cd app/ && python manage.py runserver
+
+build_docker_app:
+  type: build_docker
+  script:
     - docker build -t registry.gitlab.com/mqll/mystream:app -f Dockerfile-app .
+
+build_docker_encode:
+  type: build_docker
+  script:
+    - docker build -t registry.gitlab.com/mqll/mystream:encode -f Dockerfile-encode .
+
+push_docker_app:
+  type: push_docker
+  script:
     - docker push registry.gitlab.com/mqll/mystream:app
+
+push_docker_encode:
+  type: push_docker
+  script:
+    - docker push registry.gitlab.com/mqll/mystream:encode
