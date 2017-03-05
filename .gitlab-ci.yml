@@ -18,9 +18,9 @@ install_env:
 test_app:
   type: test
   variables:
-    RABBIT_USER: guest
-    RABBIT_PASSWD: guest
-    RABBIT_PORT_5672_TCP_ADDR: 127.0.0.1
+    RABBIT_USER: "guest"
+    RABBIT_PASSWD: "guest"
+    RABBIT_PORT_5672_TCP_ADDR: "127.0.0.1"
     RABBIT_PORT_5672_TCP_PORT: 5672
   script:
     - cd app/ && python manage.py test
